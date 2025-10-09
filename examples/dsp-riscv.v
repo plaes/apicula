@@ -410,6 +410,8 @@ module top (
    idsp DSP(
 	  .clk(dsp_clk),
 	  .reset(!resetn),
+	  .a0({36'h412345678}),
+	  .b0({36'h187654321}),
 	  .product(dsp_out),
 	  .product1(dsp_out1),
 	  .product2(dsp_out2),

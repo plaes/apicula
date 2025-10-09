@@ -1,5 +1,7 @@
 `default_nettype none
 module idsp(input wire clk, input wire reset, 
+	input wire [35:0] a0,
+	input wire [35:0] b0,
 	output wire [63:0] product, 
 	output wire [63:0] product1, 
 	output wire [63:0] product2, 
@@ -8,10 +10,11 @@ module idsp(input wire clk, input wire reset,
 
 	wire gnd = 1'b0;
 
+    /*
 	// Simple multiplication of positive numbers without registers
 	MULT36X36 mu_0(
-		.A({36'h412345678}),
-		.B({36'h187654321}),
+		.A(a0),
+		.B(b0),
 		.ASIGN(gnd),
 		.BSIGN(gnd),
 		.CE(1'b1),
@@ -27,6 +30,12 @@ module idsp(input wire clk, input wire reset,
 	defparam mu_0.ASIGN_REG=1'b0;
 	defparam mu_0.BSIGN_REG=1'b0;
 	defparam mu_0.MULT_RESET_MODE="SYNC";
+    */
+
+	wire [71:0] result;
+	assign result = a0 * b0;
+	assign product1[7:0] = result[71:64];
+	assign product = result[63:0];
 
 	// Multiplication of negative numbers with all registers
 	MULT36X36 mu_1(
@@ -51,4 +60,3 @@ endmodule
 
 `define FIRMWARE "riscv-firmware/mult36x36.hex"
 `include "dsp-riscv.v"
-
